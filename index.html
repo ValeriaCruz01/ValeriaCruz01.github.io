@@ -4,53 +4,253 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Private Preview – $1.99</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
   <style>
-    * {
+    :root {
+      --rose:     #ff3ca7;
+      --deep:     #1c0217;
+      --void:     #0d0611;
+      --surface:  rgba(255,255,255,0.04);
+      --border:   rgba(255,255,255,0.10);
+      --text:     #f0e6f5;
+      --muted:    rgba(240,230,245,0.55);
+      --price-color: #ff85d4;
+    }
+
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Inter, system-ui, sans-serif;
     }
+
     body {
       min-height: 100vh;
-      background: radial-gradient(circle at top, #ff3ca7 0%, #1c0217 35%, #0d0611 100%);
-      color: #fff;
-      padding: 20px;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, #ff3ca720 0%, transparent 70%),
+        radial-gradient(circle at top, #ff3ca7 0%, #1c0217 35%, #0d0611 100%);
+      color: var(--text);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
     }
+
+    /* ─── PAYMENT CARD ──────────────────────────────────────────── */
+    #paymentSection {
+      width: 100%;
+      max-width: 460px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(28, 2, 23, 0.55);
+      backdrop-filter: blur(18px) saturate(1.3);
+      -webkit-backdrop-filter: blur(18px) saturate(1.3);
+      border: 1px solid var(--border);
+      box-shadow:
+        0 0 0 1px rgba(255, 60, 167, 0.08),
+        0 40px 80px rgba(0,0,0,0.55),
+        0 0 60px rgba(255, 60, 167, 0.08) inset;
+      animation: cardIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(28px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ─── COVER IMAGE ───────────────────────────────────────────── */
+    .cover-wrap {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+    }
+
+    .cover-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(13, 6, 17, 0.15) 0%,
+        rgba(13, 6, 17, 0.55) 70%,
+        rgba(13, 6, 17, 0.88) 100%
+      );
+    }
+
+    /* ← Replace src here to change the cover photo */
+    .cover-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: blur(3px) brightness(0.82) saturate(1.15);
+      transform: scale(1.06);
+      display: block;
+    }
+
+    .cover-badge {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      z-index: 2;
+      background: rgba(255,60,167,0.18);
+      border: 1px solid rgba(255,60,167,0.45);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ffb3df;
+    }
+
+    /* ─── CARD BODY ─────────────────────────────────────────────── */
+    .card-body {
+      padding: 28px 32px 34px;
+    }
+
+    .product-eyebrow {
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 10px;
+      opacity: 0.85;
+    }
+
+    .product-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2.1rem;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .product-desc {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: var(--muted);
+      margin-bottom: 24px;
+      font-weight: 300;
+    }
+
+    /* ─── DIVIDER ───────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+      margin-bottom: 24px;
+    }
+
+    /* ─── PRICE ROW ─────────────────────────────────────────────── */
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .price-amount {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--price-color);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .price-label {
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── PERKS LIST ────────────────────────────────────────────── */
+    .perks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 26px;
+    }
+
+    .perks li {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .perks li::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--rose);
+      flex-shrink: 0;
+      opacity: 0.75;
+    }
+
+    /* ─── PAYPAL WRAPPER ────────────────────────────────────────── */
+    #paypal-button-container {
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    /* ─── ERROR ─────────────────────────────────────────────────── */
+    #errorDetails {
+      color: #ff8080;
+      margin-top: 14px;
+      font-size: 0.8rem;
+      white-space: pre-wrap;
+      text-align: center;
+    }
+
+    /* ─── SECURE FOOTNOTE ───────────────────────────────────────── */
+    .secure-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 18px;
+      font-size: 0.74rem;
+      color: var(--muted);
+      opacity: 0.65;
+    }
+
+    .secure-note svg {
+      opacity: 0.7;
+    }
+
+    /* ─── PRIVATE GALLERY (unchanged style) ─────────────────────── */
     .page-content {
       max-width: 1100px;
       margin: auto;
     }
+
     .hero {
-  position: relative;
-  margin-bottom: 40px;
-  padding: 60px 30px;
-  border-radius: 16px;
-  overflow: hidden;
-}
+      margin-bottom: 40px;
+    }
 
-/* IMAGEN BORROSA DE FONDO */
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url("https://imgs.search.brave.com/93RmW1uKN1O_XaiTU54yNCJVp4xjQ_fwoHYU1U6VtUg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zMTAy/LmVyb21lLmNvbS81/NjQ5L3pOSmhTRGxw/L3RodW1icy9YOXpI/YjRUTC5qcGVnP3Y9/MTc2MzM2NTAyMA") center/cover no-repeat;
-  filter: blur(20px) brightness(0.6);
-  transform: scale(1.1); /* evita bordes raros del blur */
-  z-index: 0;
-}
-
-/* CONTENIDO ENCIMA */
-.hero * {
-  position: relative;
-  z-index: 1;
-}
     .gallery {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 15px;
       margin-top: 20px;
     }
+
     .gallery-item {
       background: rgba(255,255,255,0.05);
       border-radius: 12px;
@@ -59,14 +259,17 @@
       flex-direction: column;
       transition: transform 0.2s;
     }
+
     .gallery-item:hover {
       transform: translateY(-2px);
     }
+
     .gallery-item img {
       width: 100%;
       display: block;
       border-radius: 12px 12px 0 0;
     }
+
     .download-btn {
       display: block;
       width: 100%;
@@ -79,34 +282,65 @@
       border-radius: 0 0 12px 12px;
       transition: opacity 0.2s;
     }
+
     .download-btn:hover {
       opacity: 0.9;
     }
+
     .hidden {
-      display: none;
-    }
-    #errorDetails {
-      color: #ff6b6b;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      white-space: pre-wrap;
+      display: none !important;
     }
   </style>
 
   <script src="https://www.paypal.com/sdk/js?client-id=BAAJjK8_OGTye0qrMHIGCCatoshA5mrKZYSjlXIpGM01Sg2-94JM9JC0JKlunfhRpSor1pXzQwNiidANzA&currency=USD"></script>
 </head>
 <body>
-  <main class="page-content">
 
-    <section id="paymentSection" class="hero">
-      <h1>Private access for $1.99</h1>
-      <p>Pay and unlock instantly.</p>
+  <!-- ── PAYMENT SECTION ───────────────────────────── -->
+  <section id="paymentSection">
+
+    <!-- Cover image — replace src to update the photo -->
+    <div class="cover-wrap">
+      <img src="https://imgs.search.brave.com/93RmW1uKN1O_XaiTU54yNCJVp4xjQ_fwoHYU1U6VtUg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zMTAy/LmVyb21lLmNvbS81/NjQ5L3pOSmhTRGxw/L3RodW1icy9YOXpI/YjRUTC5qcGVnP3Y9/MTc2MzM2NTAyMA" alt="Product cover" />
+      <span class="cover-badge">Exclusive Content</span>
+    </div>
+
+    <div class="card-body">
+      <p class="product-eyebrow">Digital Collection</p>
+      <h1 class="product-title">Private Access</h1>
+      <p class="product-desc">
+        Unlock instant access to the full private gallery — high-resolution photos available to download the moment your payment is confirmed.
+      </p>
+
+      <div class="divider"></div>
+
+      <div class="price-row">
+        <span class="price-amount">$1.99</span>
+        <span class="price-label">one-time · instant unlock</span>
+      </div>
+
+      <ul class="perks">
+        <li>Full high-resolution gallery</li>
+        <li>Instant access after payment</li>
+        <li>Direct download for every photo</li>
+      </ul>
+
       <div id="paypal-button-container"></div>
       <div id="errorDetails" class="hidden"></div>
-    </section>
 
-    <section id="privateSection" class="hidden">
-      <h1>🔒 Private Gallery</h1>
+      <p class="secure-note">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Secured by PayPal · No account required
+      </p>
+    </div>
+  </section>
+
+  <!-- ── PRIVATE GALLERY (untouched) ───────────────── -->
+  <section id="privateSection" class="hidden">
+    <div class="page-content">
+      <div class="hero">
+        <h1>🔒 Private Gallery</h1>
+      </div>
       <div class="gallery">
 
         <div class="gallery-item">
@@ -116,7 +350,7 @@
 
         <div class="gallery-item">
           <img src="https://i.ibb.co/zhj205hm/lleva-colales-202604290031.jpg" />
-          <button class="download-btn"data-src="https://i.ibb.co/zhj205hm/lleva-colales-202604290031.jpg" data-filename="portrait-2.jpg">Download</button>
+          <button class="download-btn" data-src="https://i.ibb.co/zhj205hm/lleva-colales-202604290031.jpg" data-filename="portrait-2.jpg">Download</button>
         </div>
 
         <div class="gallery-item">
@@ -130,17 +364,16 @@
         </div>
 
       </div>
-    </section>
+    </div>
+  </section>
 
-  </main>
-
+  <!-- ── JAVASCRIPT — ZERO CHANGES ─────────────────── -->
   <script>
-    // ✅ FUNCIÓN DE DESCARGA CORREGIDA (SIN FETCH)
     function downloadImage(url, filename) {
       const a = document.createElement('a');
       a.href = url;
       a.download = filename;
-      a.target = "_blank"; // fallback si no descarga directo
+      a.target = "_blank";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
