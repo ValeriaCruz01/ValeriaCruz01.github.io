@@ -22,8 +22,29 @@
       margin: auto;
     }
     .hero {
-      margin-bottom: 40px;
-    }
+  position: relative;
+  margin-bottom: 40px;
+  padding: 60px 30px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* IMAGEN BORROSA DE FONDO */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("https://imgs.search.brave.com/93RmW1uKN1O_XaiTU54yNCJVp4xjQ_fwoHYU1U6VtUg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zMTAy/LmVyb21lLmNvbS81/NjQ5L3pOSmhTRGxw/L3RodW1icy9YOXpI/YjRUTC5qcGVnP3Y9/MTc2MzM2NTAyMA") center/cover no-repeat;
+  filter: blur(20px) brightness(0.6);
+  transform: scale(1.1); /* evita bordes raros del blur */
+  z-index: 0;
+}
+
+/* CONTENIDO ENCIMA */
+.hero * {
+  position: relative;
+  z-index: 1;
+}
     .gallery {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -95,7 +116,7 @@
 
         <div class="gallery-item">
           <img src="https://i.ibb.co/zhj205hm/lleva-colales-202604290031.jpg" />
-          <button class="https://i.ibb.co/zhj205hm/lleva-colales-202604290031.jpg" data-filename="portrait-2.jpg">Download</button>
+          <button class="download-btn"data-src="https://i.ibb.co/zhj205hm/lleva-colales-202604290031.jpg" data-filename="portrait-2.jpg">Download</button>
         </div>
 
         <div class="gallery-item">
