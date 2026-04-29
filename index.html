@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private Preview – $1.99</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #ff3ca7 0%, #1c0217 35%, #0d0611 100%);
+      color: #fff;
+      padding: 20px;
+    }
+    .page-content {
+      max-width: 1100px;
+      margin: auto;
+    }
+    .hero {
+      margin-bottom: 40px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .gallery-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s;
+    }
+    .gallery-item:hover {
+      transform: translateY(-2px);
+    }
+    .gallery-item img {
+      width: 100%;
+      display: block;
+      border-radius: 12px 12px 0 0;
+    }
+    .download-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(135deg, #ff1076, #ff85e9);
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 0 0 12px 12px;
+      transition: opacity 0.2s;
+    }
+    .download-btn:hover {
+      opacity: 0.9;
+    }
+    .hidden {
+      display: none;
+    }
+    #errorDetails {
+      color: #ff6b6b;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+  </style>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAJjK8_OGTye0qrMHIGCCatoshA5mrKZYSjlXIpGM01Sg2-94JM9JC0JKlunfhRpSor1pXzQwNiidANzA&currency=USD"></script>
+</head>
+<body>
+  <main class="page-content">
+
+    <section id="paymentSection" class="hero">
+      <h1>Private access for $1.99</h1>
+      <p>Pay and unlock instantly.</p>
+      <div id="paypal-button-container"></div>
+      <div id="errorDetails" class="hidden"></div>
+    </section>
+
+    <section id="privateSection" class="hidden">
+      <h1>🔒 Private Gallery</h1>
+      <div class="gallery">
+
+        <div class="gallery-item">
+          <img src="https://i.ibb.co/whySYQHp/download.png" />
+          <button class="download-btn" data-src="https://i.ibb.co/whySYQHp/download.png" data-filename="portrait-1.jpg">Download</button>
+        </div>
+
+        <div class="gallery-item">
+          <img src="https://i.ibb.co/zhj205hm/lleva-colales-202604290031.jpg" />
+          <button class="https://i.ibb.co/zhj205hm/lleva-colales-202604290031.jpg" data-filename="portrait-2.jpg">Download</button>
+        </div>
+
+        <div class="gallery-item">
+          <img src="https://i.ibb.co/ksWLRDHx/2.jpg" />
+          <button class="download-btn" data-src="https://i.ibb.co/ksWLRDHx/2.jpg" data-filename="group-1.jpg">Download</button>
+        </div>
+
+        <div class="gallery-item">
+          <img src="https://imgs.search.brave.com/93RmW1uKN1O_XaiTU54yNCJVp4xjQ_fwoHYU1U6VtUg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zMTAy/LmVyb21lLmNvbS81/NjQ5L3pOSmhTRGxw/L3RodW1icy9YOXpI/YjRUTC5qcGVnP3Y9/MTc2MzM2NTAyMA" />
+          <button class="download-btn" data-src="https://imgs.search.brave.com/93RmW1uKN1O_XaiTU54yNCJVp4xjQ_fwoHYU1U6VtUg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zMTAy/LmVyb21lLmNvbS81/NjQ5L3pOSmhTRGxw/L3RodW1icy9YOXpI/YjRUTC5qcGVnP3Y9/MTc2MzM2NTAyMA" data-filename="group-1.jpg">Download</button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // ✅ FUNCIÓN DE DESCARGA CORREGIDA (SIN FETCH)
+    function downloadImage(url, filename) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.target = "_blank"; // fallback si no descarga directo
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    (function() {
+      const paymentSection = document.getElementById('paymentSection');
+      const privateSection = document.getElementById('privateSection');
+      const errorDetails = document.getElementById('errorDetails');
+
+      if (localStorage.getItem('paidAccess') === 'true') {
+        paymentSection.classList.add('hidden');
+        privateSection.classList.remove('hidden');
+        attachDownloadListeners();
+        return;
+      }
+
+      paypal.Buttons({
+
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: { value: '1.99' }
+            }]
+          });
+        },
+
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            localStorage.setItem('paidAccess', 'true');
+            paymentSection.classList.add('hidden');
+            privateSection.classList.remove('hidden');
+            attachDownloadListeners();
+          });
+        },
+
+        onError: function(err) {
+          errorDetails.textContent = 'Payment failed. Try again.';
+          errorDetails.classList.remove('hidden');
+        }
+
+      }).render('#paypal-button-container');
+
+      function attachDownloadListeners() {
+        document.querySelectorAll('.download-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            downloadImage(this.dataset.src, this.dataset.filename);
+          });
+        });
+      }
+
+    })();
+  </script>
+
+</body>
+</html>
